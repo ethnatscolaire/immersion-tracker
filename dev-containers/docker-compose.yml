@@ -1,0 +1,56 @@
+# Docker compose file for development
+services:
+  kratos-migrate:
+    image: oryd/kratos:v26.2.0
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DSN: postgres://kratos:kratos_password@postgres:5432/kratos?sslmode=disable
+    volumes:
+      - ./kratos:/etc/config/kratos
+    networks:
+      - internal
+    command: migrate sql -e --yes -c /etc/config/kratos/kratos.yml
+    restart: "no"
+
+  kratos:
+    image: oryd/kratos:v26.2.0
+    depends_on:
+      kratos-migrate:
+        condition: service_completed_successfully
+    environment:
+      DSN: postgres://kratos:kratos_password@postgres:5432/kratos?sslmode=disable
+    volumes:
+      - ./kratos:/etc/config/kratos
+    networks:
+      - internal
+    command: serve -c /etc/config/kratos/kratos.yml --dev
+    ports:
+      - "4433:4433" # Public API
+      - "4434:4434" # Admin API
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: kratos
+      POSTGRES_PASSWORD: kratos_password
+      POSTGRES_DB: kratos
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kratos"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  internal:
+    driver: bridge
