@@ -14,16 +14,16 @@ export default function SignIn() {
       </h1>
 
       {/* Email input & label */}
-      <div className="mb-3">
+      <div className="mb-4">
         <label
           htmlFor="email-input"
-          className="text-[12px] text-muted-text font-semibold block "
+          className="text-[12px] text-muted-text font-semibold block mb-1"
         >
           EMAIL
         </label>
         <Input
           placeholder="you@example.com"
-          className="mt-1  w-[400px]"
+          className="mt-1 w-full"
           autoComplete="email"
           id="email-input"
         />
@@ -31,7 +31,7 @@ export default function SignIn() {
 
       {/* Password input & label */}
       <div className="mb-5">
-        <div className="flex justify-between text-[12px]">
+        <div className="mb-1 flex justify-between text-[12px]">
           <label
             htmlFor="password-input"
             className="text-muted-text font-semibold block"
@@ -50,7 +50,7 @@ export default function SignIn() {
           autoComplete="current-password"
           type="password"
           placeholder="••••••••"
-          className="mt-1 w-[400px]"
+          className="mt-1 w-full"
           id="email-input"
         />
       </div>
