@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Manrope } from "next/font/google";
 
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -30,6 +31,7 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-[#0c0d11]">
         <main>{children}</main>
+        <Toaster />
       </body>
     </html>
   );
